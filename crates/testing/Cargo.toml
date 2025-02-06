@@ -1,0 +1,18 @@
+[package]
+name = "testing"
+version = "0.1.0"
+edition = "2021"
+
+[dev-dependencies]
+rsttl_macros = { path = "../rsttl_macros" }
+rstest = "0.24.0"
+test-log = { version = "0.2.17", features = ["trace"] }
+tokio = { version = "1.43.0", features = ["test-util", "macros"] }
+
+proptest = "1.6.0"
+#insta = "1.40.0"
+#mockall = "0.13.0"
+#static_assertions = "1.1.0"
+
+[dependencies]
+tracing = { version = "0.1.41" }

@@ -1,0 +1,6 @@
+[workspace]
+members = [
+    "crates/rsttl_macros",
+    "crates/testing",
+]
+resolver = "2"
