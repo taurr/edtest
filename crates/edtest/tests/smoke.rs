@@ -1,4 +1,4 @@
-use bptest::{serial, test};
+use edtest::{serial, test};
 use tracing::*;
 
 #[test]
@@ -12,7 +12,7 @@ async fn async_value_test(
     warn!(ab, ba);
     assert_eq!(ab, ba);
 
-    bptest::assert_cfg!(test);
+    edtest::assert_cfg!(test);
 }
 
 proptest::proptest! {

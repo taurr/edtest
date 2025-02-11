@@ -1,6 +1,6 @@
 [workspace]
-members = [ "crates/bptest",
-    "crates/bptest",
-    "crates/bptest_macros",
+members = [
+    "crates/edtest",
+    "crates/edtest_macros",
 ]
 resolver = "2"
