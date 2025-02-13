@@ -4,3 +4,17 @@ members = [
     "crates/edtest_macros",
 ]
 resolver = "2"
+
+[workspace.dependencies]
+proc-macro2 = "1.0.93"
+quote = "1.0.38"
+syn = "2.0.98"
+
+proptest = "1.6.0"
+tracing = "0.1.41"
+
+rstest = "0.24.0"
+tokio = { version = "1.43.0", features = ["test-util", "macros"] }
+test-log = { version = "0.2.17", features = ["trace"] }
+static_assertions = "1.1.0"
+serial_test = "3.2.0"
