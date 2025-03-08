@@ -31,9 +31,18 @@ serial_test = ...
 - [`tempfile`](https://crates.io/crates/tempfile)
   Temporary storage and files
 
+### Network
+- [`mockito`](https://crates.io/crates/mockito)
+  Generating and delivering HTTP mocks
+- [`axum-test`](https://crates.io/crates/axum-test)
+  Test Axum servers in isolation.
+
 ### CLI programs
 - [`assert_cmd`](https://crates.io/crates/assert_cmd)
   Simplify integration testing of CLI's
 - [`rexpect`](https://crates.io/crates/rexpect)
   Running/testing interactive CLI's
 
+### Tools
+- [coverage](https://crates.io/crates/cargo-llvm-cov)
+  LLVM Coverage reports the easy way
