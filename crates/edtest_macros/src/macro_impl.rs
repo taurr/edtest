@@ -1,14 +1,13 @@
 use proc_macro::TokenStream;
 use quote::quote;
-use syn::{ItemFn, parse_macro_input};
 
 pub(crate) fn test_attribute_impl(_args: TokenStream, input: TokenStream) -> TokenStream {
-    let ItemFn {
+    let syn::ItemFn {
         sig,
         vis,
         block,
         attrs,
-    } = parse_macro_input!(input as ItemFn);
+    } = syn::parse_macro_input!(input as syn::ItemFn);
 
     let test_attr = if sig.asyncness.is_some() {
         quote!(
