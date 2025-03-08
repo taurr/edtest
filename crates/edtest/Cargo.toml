@@ -11,7 +11,7 @@ license = "MIT OR Apache-2.0"
 repository = "https://gitea.jrtv.dk/johnny/easy-desktop-test"
 
 [dependencies]
-edtest_macros = { path = "../edtest_macros" }
+edtest_macros = { version = "0.1.0" }
 
 rstest = { workspace = true }
 test-log = { workspace = true, features = ["trace"] }
@@ -20,3 +20,6 @@ static_assertions = { workspace = true }
 
 [dev-dependencies]
 tracing = { workspace = true }
+
+[patch.crates-io]
+edtest_macros = { path = "../edtest_macros" }
