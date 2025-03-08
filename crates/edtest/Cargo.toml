@@ -1,17 +1,12 @@
 [package]
 name = "edtest"
 version = "0.1.0"
-edition = "2021"
+edition = "2024"
 
 [dependencies]
 edtest_macros = { path = "../edtest_macros" }
 
 rstest = { workspace = true }
-tokio = { workspace = true, features = ["test-util", "macros"] }
 test-log = { workspace = true, features = ["trace"] }
-static_assertions = { workspace = true }
 serial_test = { workspace = true }
-
-[dev-dependencies]
-proptest = { workspace = true }
-tracing = { workspace = true }
+static_assertions = { workspace = true }
