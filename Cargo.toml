@@ -1,6 +1,6 @@
 [workspace]
+resolver = "2"
 members = ["crates/edtest", "crates/edtest_macros", "crates/edtest_tests"]
-resolver = "3"
 
 [workspace.dependencies]
 proc-macro2 = "1.0.94"

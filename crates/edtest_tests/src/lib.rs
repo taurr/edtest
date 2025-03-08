@@ -15,17 +15,16 @@ mod test {
     }
 
     #[test]
-    #[serial]
     async fn async_value_test(
-        #[values(0, 1, 2, 3, 4, 5, 6, 7, 8, 9)] a: u32,
-        #[values(0, 1, 2, 3, 4, 5, 6, 7, 8, 9)] b: u32,
+        #[values(0, 1, 2, 3, 4, 5)] a: u32,
+        #[values(0, 1, 2, 3, 4, 5)] b: u32,
     ) {
         use edtest::assert_cfg;
         // `static_assertions` are re-exported for convenience
         assert_cfg!(test);
 
         trace!(a, b);
-        let ab = a + b;
+        let ab = super::add(a, b);
         let ba = b + a;
         assert_eq!(ab, ba);
 

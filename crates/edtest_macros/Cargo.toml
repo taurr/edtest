@@ -1,7 +1,14 @@
 [package]
 name = "edtest_macros"
 version = "0.1.0"
-edition = "2024"
+description = "Procedural macros for the `edtest` crate."
+readme = "README.md"
+edition = "2021"
+authors = ["Johnny Tidemand Vestergaard <jtv@jrtv.dk>"]
+keywords = ["testing", "rstest"]
+categories = ["development-tools::testing"]
+license = "MIT OR Apache-2.0"
+repository = "https://gitea.jrtv.dk/johnny/easy-desktop-test"
 
 [lib]
 proc-macro = true

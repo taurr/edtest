@@ -1,21 +1,55 @@
 # Easy Desktop Test
 
-The crate streamlines the use of `rstest` with logging and support for async tests with the `tokio` framework.
+The crate streamlines the use of [`rstest`](https://crates.io/crates/rstest) with support for [`tracing`](https://crates.io/crates/tracing) (using [`test-log`](https://crates.io/crates/test-log)). `async` tests are supported using the [`tokio`](https://crates.io/crates/tokio) framework.
 
-It collects the use of [`rstest`](https://crates.io/crates/rstest), [`test-log`](https://crates.io/crates/test-log), [`serial_test`](https://crates.io/crates/serial_test) and [`static_assertions`](https://crates.io/crates/static_assertions) into one test crate.
+The crate re-exports the assertions from [`static-assertions`](https://crates.io/crates/static-assertions), and the `#[serial]` attribute of [`serial_test`](https://crates.io/crates/serial_test) for pure convenience.
+
+## Usage
 
 Unfortunately, due to the nature of macros, besides this crate the user still needs a few dev-dependencies:
 
+cargo.toml:
 ```toml
 [dev-dependencies]
 edtest = ...
 rstest = ...
 test-log = ...
-# Only needed if using the #[serial] attribute to make tests not run in parallel
+# Only needed if using the #[serial] attribute to make tests not run concurrently
 serial_test = ...
 ```
 
-`proptest` is fully supported.
+tests:
+```rust
+use edtest::test;
+use tracing::*;
+
+/// Normal synchronous test.
+/// Note that `cargo test` still tries to run these concurrently!
+#[test]
+fn sync_test() {
+    info!("Tracing output is captured and part of the test output");
+}
+
+/// Async tests using `tokio` are fully supported - they can even
+/// be run using `serial` (non-concurrent)
+#[test]
+#[edtest::serial]
+async fn async_value_test(
+    #[values(0, 1, 2, 3, 4, 5)] a: u32,
+    #[values(0, 1, 2, 3, 4, 5)] b: u32,
+) {
+    use edtest::assert_cfg;
+    // `static_assertions` are re-exported for convenience
+    assert_cfg!(test);
+
+    trace!(a, b);
+    let ab = super::add(a, b);
+    let ba = b + a;
+    assert_eq!(ab, ba);
+
+    tokio::time::sleep(std::time::Duration::from_millis(100)).await;
+}
+```
 
 ## Noteworthy crates
 ### General
@@ -25,7 +59,7 @@ serial_test = ...
   Proterty based testing with arbitrary input
 - [`mockall`](https://crates.io/crates/mockall)
 
-### Files
+### Messing with files
 - [`assert_fs`](https://crates.io/crates/assert_fs)
   Working with external files during testing
 - [`tempfile`](https://crates.io/crates/tempfile)

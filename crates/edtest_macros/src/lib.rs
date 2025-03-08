@@ -1,3 +1,5 @@
+#![doc = include_str!("../README.md")]
+
 mod macro_impl;
 
 use proc_macro::TokenStream;

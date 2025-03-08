@@ -1,7 +1,14 @@
 [package]
 name = "edtest_tests"
 version = "0.1.0"
-edition = "2024"
+description = "Tests for the `edtest` crate."
+readme = "README.md"
+edition = "2021"
+authors = ["Johnny Tidemand Vestergaard <jtv@jrtv.dk>"]
+keywords = ["testing", "rstest"]
+categories = ["development-tools::testing"]
+license = "MIT OR Apache-2.0"
+repository = "https://gitea.jrtv.dk/johnny/easy-desktop-test"
 
 [dependencies]
 tokio = { workspace = true, features = ["test-util", "macros"] }
@@ -14,4 +21,3 @@ edtest = { path = "../edtest" }
 rstest = { workspace = true }
 test-log = { workspace = true, features = ["trace"] }
 serial_test = { workspace = true }
-
