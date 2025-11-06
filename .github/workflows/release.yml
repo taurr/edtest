@@ -64,10 +64,23 @@ jobs:
 
           echo "version=$VERSION" >> "$GITHUB_OUTPUT"
 
-      - name: Publish edtest_macros first
+      - name: Publish edtest_macros first (skip if already exists)
+        env:
+          VERSION: ${{ steps.meta.outputs.version }}
+          UA: edtest-release-action (+https://github.com/taurr/edtest)
         run: |
           set -euo pipefail
-          cargo publish -p edtest_macros
+          # If this version already exists on crates.io, skip publishing
+          CODE=$(curl -sS -H "User-Agent: ${UA}" -o /dev/null -w "%{http_code}" "https://crates.io/api/v1/crates/edtest_macros/${VERSION}")
+          if [ "$CODE" = "200" ]; then
+            echo "edtest_macros ${VERSION} already on crates.io, skipping publish"
+            exit 0
+          fi
+          echo "Publishing edtest_macros ${VERSION}..."
+          if ! cargo publish -p edtest_macros; then
+            echo "::error::Failed to publish edtest_macros ${VERSION}" >&2
+            exit 1
+          fi
 
       - name: Wait for edtest_macros to appear on crates.io
         env:
