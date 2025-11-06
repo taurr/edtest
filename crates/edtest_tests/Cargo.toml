@@ -8,7 +8,7 @@ authors = ["Johnny Tidemand Vestergaard <jtv@jrtv.dk>"]
 keywords = ["testing", "rstest"]
 categories = ["development-tools::testing"]
 license = "MIT OR Apache-2.0"
-repository = "https://gitea.jrtv.dk/johnny/easy-desktop-test"
+repository = "https://github.com/taurr/edtest"
 
 [dependencies]
 tokio = { workspace = true, features = ["test-util", "macros"] }
