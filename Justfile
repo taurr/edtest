@@ -35,3 +35,17 @@ logs:
 
 example-logs:
     TEST_LOG=1 RUST_LOG=info cargo test -p edtest_example_usage --no-fail-fast -- --nocapture
+
+# Coverage (HTML report under target/llvm-cov/html)
+coverage:
+    # Workspace coverage excluding examples and the test-only crate
+    cargo llvm-cov --workspace --all-features --exclude-from-report edtest_example_usage --exclude-from-report edtest_tests --html
+
+coverage-summary:
+    cargo llvm-cov --workspace --all-features --exclude-from-report edtest_example_usage --exclude-from-report edtest_tests --summary-only
+
+coverage-open:
+    cargo llvm-cov --workspace --all-features --exclude-from-report edtest_example_usage --exclude-from-report edtest_tests --open
+
+coverage-example:
+    cargo llvm-cov -p edtest_example_usage --html
