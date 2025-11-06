@@ -56,7 +56,7 @@ async fn async_value_test(
 - [`insta`](https://crates.io/crates/insta) 
   Snapshot testing
 - [`proptest`](https://crates.io/crates/proptest)
-  Proterty based testing with arbitrary input
+  Property based testing with arbitrary input
 - [`mockall`](https://crates.io/crates/mockall)
 
 ### Messing with files
@@ -73,9 +73,9 @@ async fn async_value_test(
 
 ### CLI programs
 - [`assert_cmd`](https://crates.io/crates/assert_cmd)
-  Simplify integration testing of CLI's
+  Simplify integration testing of CLIs
 - [`rexpect`](https://crates.io/crates/rexpect)
-  Running/testing interactive CLI's
+  Running/testing interactive CLIs
 
 ### Tools
 - [coverage](https://crates.io/crates/cargo-llvm-cov)

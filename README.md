@@ -15,7 +15,7 @@ Add the following dev‑dependencies to your crate:
 ```toml
 [dev-dependencies]
 edtest = "0.1"
-rstest = "0.25"
+rstest = "0.26"
 test-log = { version = "0.2", features = ["trace"] }
 # Only if you want non-concurrent tests
 serial_test = "3"

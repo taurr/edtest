@@ -10,7 +10,7 @@ syn = "2.0.99"
 proptest = "1.6.0"
 tracing = "0.1.41"
 
-rstest = "0.25.0"
+rstest = "0.26.1"
 tokio = { version = "1.44.0", features = ["test-util", "macros"] }
 test-log = { version = "0.2.17", features = ["trace"] }
 static_assertions = "1.1.0"
