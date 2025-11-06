@@ -1,6 +1,6 @@
 # EDTest — Easy Desktop Test
 
-[![CI](https://github.com/taurr/edtest/actions/workflows/ci.yml/badge.svg)](https://github.com/taurr/edtest/actions/workflows/ci.yml) ![Coverage](https://raw.githubusercontent.com/taurr/edtest/main/badges/coverage.svg)
+[![CI](https://github.com/taurr/edtest/actions/workflows/ci.yml/badge.svg)](https://github.com/taurr/edtest/actions/workflows/ci.yml) ![Coverage](https://raw.githubusercontent.com/taurr/edtest/main/badges/coverage.svg) [![docs.rs](https://docs.rs/edtest/badge.svg)](https://docs.rs/edtest)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE-MIT)
 [![License: Apache-2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE-APACHE)
 
