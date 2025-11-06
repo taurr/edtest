@@ -9,8 +9,7 @@ fmt-check:
     cargo fmt --all -- --check
 
 clippy:
-    # Allow clippy's doctest-specific lint in README examples
-    cargo clippy --workspace --all-targets --all-features -- -A clippy::test_attr_in_doctest -D warnings
+    cargo clippy --workspace --all-targets --all-features -- -D warnings
 
 build:
     cargo build --workspace --all-targets --all-features

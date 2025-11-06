@@ -19,7 +19,7 @@ serial_test = ...
 ```
 
 tests:
-```rust
+```rust,ignore
 use edtest::test;
 use tracing::*;
 

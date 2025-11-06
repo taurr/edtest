@@ -7,6 +7,6 @@ if command -v just >/dev/null 2>&1; then
 else
   echo "pre-commit: 'just' not found, running cargo checks directly"
   cargo fmt --all -- --check
-  cargo clippy --workspace --all-targets --all-features -- -A clippy::test_attr_in_doctest -D warnings
+  cargo clippy --workspace --all-targets --all-features -- -D warnings
   cargo build --workspace --all-targets --all-features
 fi

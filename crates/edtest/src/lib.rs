@@ -1,4 +1,3 @@
-#![doc(test(attr(allow(clippy::test_attr_in_doctest))))]
 #![doc = include_str!("../README.md")]
 
 /// Generate a test function using `rstest`. If used on a `async` function
