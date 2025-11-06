@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+echo "pre-push: running tests..."
+if command -v just >/dev/null 2>&1; then
+  just test
+else
+  echo "pre-push: 'just' not found, running cargo tests directly"
+  cargo test --workspace --all-features --no-fail-fast
+fi

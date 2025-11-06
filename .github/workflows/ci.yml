@@ -24,7 +24,8 @@ jobs:
         run: cargo fmt --all -- --check
 
       - name: Lints (clippy)
-        run: cargo clippy --workspace --all-targets --all-features -- -D warnings
+        # Allow doctest-specific lint triggered by README examples with #[test]
+        run: cargo clippy --workspace --all-targets --all-features -- -A clippy::test_attr_in_doctest -D warnings
 
       - name: Build
         run: cargo build --workspace --all-targets --all-features
