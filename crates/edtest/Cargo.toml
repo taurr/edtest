@@ -20,6 +20,3 @@ static_assertions = { workspace = true }
 
 [dev-dependencies]
 tracing = { workspace = true }
-
-[patch.crates-io]
-edtest_macros = { path = "../edtest_macros" }
