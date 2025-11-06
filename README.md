@@ -51,6 +51,36 @@ async fn async_value_test(
 
 See the crate README in `crates/edtest/` for more details.
 
+## Examples
+
+This repo includes a small, runnable example crate in `examples/usage` that demonstrates:
+
+- Synchronous tests with tracing
+- Parameterized tests with `#[values]`
+- Async tests on Tokio, optionally `#[edtest::serial]`
+- Using `#[fixture]` for shared setup
+
+Run the examples:
+
+```bash
+cargo test -p edtest_example_usage --no-fail-fast
+```
+
+### Show logs from passing tests
+
+By default, `test-log` only prints logs on failures. To always show logs (useful when exploring the examples), enable logging and disable output capture:
+
+```bash
+TEST_LOG=1 RUST_LOG=info cargo test -p edtest_example_usage -- --nocapture
+```
+
+If you use `just`, convenient recipes are provided:
+
+```bash
+just example-logs    # logs for the examples crate
+just logs            # logs for the whole workspace
+```
+
 ## Development
 
 - Requires Rust 1.74+ (edition 2021).

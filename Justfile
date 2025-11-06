@@ -28,3 +28,10 @@ ci: fmt-check clippy build test
 # One-time setup to enable versioned git hooks in this repo
 hooks-install:
     git config core.hooksPath .githooks
+
+# Show logs from tests (success cases too)
+logs:
+    TEST_LOG=1 RUST_LOG=info cargo test --workspace --all-features --no-fail-fast -- --nocapture
+
+example-logs:
+    TEST_LOG=1 RUST_LOG=info cargo test -p edtest_example_usage --no-fail-fast -- --nocapture
