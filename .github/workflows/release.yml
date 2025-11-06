@@ -1,0 +1,100 @@
+name: Release (crates.io)
+
+on:
+  push:
+    tags:
+      - 'release/*'
+  # Optional manual run for dry-runs or re-publish
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to publish (e.g., 0.1.0)'
+        required: false
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    env:
+      CARGO_TERM_COLOR: always
+      # Token for crates.io (set this in repo settings → Secrets → Actions)
+      CARGO_REGISTRY_TOKEN: ${{ secrets.CRATES_IO_TOKEN }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Install cargo-llvm-cov (for consistency with local toolchain)
+        uses: taiki-e/install-action@v2
+        with:
+          tool: cargo-llvm-cov
+
+      - name: Resolve tag/version and validate Cargo.toml versions
+        id: meta
+        shell: bash
+        run: |
+          set -euo pipefail
+          TAG_REF="${GITHUB_REF##*/}"
+          INPUT_VER="${{ github.event.inputs.version || '' }}"
+          if [[ -n "$INPUT_VER" ]]; then
+            VERSION="$INPUT_VER"
+          else
+            # Expect tags like release/0.1.0
+            VERSION="${TAG_REF#release/}"
+          fi
+          echo "Resolved release version: $VERSION"
+
+          # Extract versions from Cargo manifests
+          edtest_ver=$(grep -m1 '^version\s*=\s*"' crates/edtest/Cargo.toml | sed -E 's/.*"([0-9]+(\.[0-9]+){1,2})".*/\1/')
+          macros_ver=$(grep -m1 '^version\s*=\s*"' crates/edtest_macros/Cargo.toml | sed -E 's/.*"([0-9]+(\.[0-9]+){1,2})".*/\1/')
+
+          echo "edtest version:        $edtest_ver"
+          echo "edtest_macros version: $macros_ver"
+
+          if [[ "$VERSION" != "$edtest_ver" || "$VERSION" != "$macros_ver" ]]; then
+            echo "::error::Tag/version ($VERSION) does not match Cargo.toml versions (edtest=$edtest_ver, edtest_macros=$macros_ver)" >&2
+            exit 1
+          fi
+
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+
+      - name: Publish edtest_macros first
+        run: |
+          set -euo pipefail
+          cargo publish -p edtest_macros
+
+      - name: Wait for edtest_macros to appear on crates.io
+        env:
+          VERSION: ${{ steps.meta.outputs.version }}
+        run: |
+          set -euo pipefail
+          for i in {1..30}; do
+            if curl -sSf "https://crates.io/api/v1/crates/edtest_macros/${VERSION}" >/dev/null; then
+              echo "edtest_macros ${VERSION} available on crates.io"
+              exit 0
+            fi
+            echo "Waiting for indexing... ($i)"
+            sleep 10
+          done
+          echo "::error::edtest_macros ${VERSION} not indexed in time" >&2
+          exit 1
+
+      - name: Publish edtest
+        run: |
+          set -euo pipefail
+          cargo publish -p edtest
+
+      - name: Create GitHub Release (notes)
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: edtest ${{ steps.meta.outputs.version }}
+          generate_release_notes: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
