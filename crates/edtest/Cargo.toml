@@ -1,6 +1,6 @@
 [package]
 name = "edtest"
-version = "0.1.0"
+version = "0.5.0"
 description = "Streamlines the use of `rstest` with tracing and support for async tests with the `tokio` framework."
 readme = "README.md"
 edition = "2021"
@@ -11,7 +11,7 @@ license = "MIT OR Apache-2.0"
 repository = "https://github.com/taurr/edtest"
 
 [dependencies]
-edtest_macros = { version = "0.1.0" }
+edtest_macros = { version = "0.5.0" }
 
 rstest = { workspace = true }
 test-log = { workspace = true, features = ["trace"] }
