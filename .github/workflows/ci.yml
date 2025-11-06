@@ -24,7 +24,7 @@ jobs:
         run: cargo fmt --all -- --check
 
       - name: Lints (clippy)
-        run: cargo clippy --workspace --all-targets --all-features -D warnings
+        run: cargo clippy --workspace --all-targets --all-features -- -D warnings
 
       - name: Build
         run: cargo build --workspace --all-targets --all-features
