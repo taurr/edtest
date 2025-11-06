@@ -1,6 +1,11 @@
 [workspace]
 resolver = "2"
-members = ["crates/edtest", "crates/edtest_macros", "crates/edtest_tests"]
+members = [
+    "crates/edtest",
+    "crates/edtest_macros",
+    "crates/edtest_tests",
+    "examples/usage",
+]
 
 [workspace.dependencies]
 proc-macro2 = "1.0.94"

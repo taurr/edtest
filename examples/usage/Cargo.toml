@@ -1,0 +1,19 @@
+[package]
+name = "edtest_example_usage"
+version = "0.1.0"
+edition = "2021"
+publish = false
+
+[dev-dependencies]
+edtest = { path = "../../crates/edtest" }
+rstest = "0.26.1"
+test-log = { version = "0.2.18", features = ["trace"] }
+serial_test = "3.2.0"
+tokio = { version = "1.48.0", features = [
+    "macros",
+    "rt",
+    "time",
+    "rt-multi-thread",
+    "test-util",
+] }
+tracing = "0.1.41"
