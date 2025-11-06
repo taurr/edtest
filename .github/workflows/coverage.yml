@@ -1,0 +1,67 @@
+name: Coverage
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  coverage:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Install cargo-llvm-cov
+        uses: taiki-e/install-action@v2
+        with:
+          tool: cargo-llvm-cov
+
+      - name: Generate coverage summary (exclude macros lib.rs, tests crate, examples)
+        id: cov
+        run: |
+          cargo llvm-cov \
+            --workspace --all-features --summary-only \
+            --exclude-from-report edtest_tests \
+            --exclude-from-report edtest_example_usage \
+            --ignore-filename-regex 'crates/edtest_macros/src/lib.rs' \
+            > coverage-summary.txt
+
+          PERCENT=$(grep -oE '[0-9]+\.[0-9]+%' coverage-summary.txt | tail -1 | tr -d '%')
+          if [ -z "$PERCENT" ]; then PERCENT=0; fi
+          echo "percent=$PERCENT" >> "$GITHUB_OUTPUT"
+
+      - name: Pick badge color
+        id: color
+        run: |
+          P=${{ steps.cov.outputs.percent }}
+          COLOR=red
+          awk -v p="$P" 'BEGIN{ \
+            if (p>=90) c="brightgreen"; \
+            else if (p>=80) c="green"; \
+            else if (p>=70) c="yellowgreen"; \
+            else if (p>=60) c="yellow"; \
+            else if (p>=50) c="orange"; \
+            else c="red"; \
+            printf("color=%s\n", c); \
+          }' >> "$GITHUB_OUTPUT"
+
+      - name: Generate badge SVG
+        uses: emibcn/badge-action@v2
+        with:
+          label: coverage
+          status: "${{ steps.cov.outputs.percent }}%"
+          color: "${{ steps.color.outputs.color }}"
+          path: badges/coverage.svg
+
+      - name: Commit badge
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "chore(coverage): update coverage badge"
+          file_pattern: badges/coverage.svg

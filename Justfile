@@ -38,14 +38,14 @@ example-logs:
 
 # Coverage (HTML report under target/llvm-cov/html)
 coverage:
-    # Workspace coverage excluding examples and the test-only crate
-    cargo llvm-cov --workspace --all-features --exclude-from-report edtest_example_usage --exclude-from-report edtest_tests --html
+    # Workspace coverage excluding examples, test-only crate and proc-macro crate
+    cargo llvm-cov --workspace --all-features --exclude-from-report edtest_example_usage --exclude-from-report edtest_tests --exclude-from-report edtest_macros --html
 
 coverage-summary:
-    cargo llvm-cov --workspace --all-features --exclude-from-report edtest_example_usage --exclude-from-report edtest_tests --summary-only
+    cargo llvm-cov --workspace --all-features --exclude-from-report edtest_example_usage --exclude-from-report edtest_tests --exclude-from-report edtest_macros --summary-only
 
 coverage-open:
-    cargo llvm-cov --workspace --all-features --exclude-from-report edtest_example_usage --exclude-from-report edtest_tests --open
+    cargo llvm-cov --workspace --all-features --exclude-from-report edtest_example_usage --exclude-from-report edtest_tests --exclude-from-report edtest_macros --open
 
 coverage-example:
     cargo llvm-cov -p edtest_example_usage --html
