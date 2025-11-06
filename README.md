@@ -1,5 +1,9 @@
 # EDTest — Easy Desktop Test
 
+[![CI](https://github.com/taurr/edtest/actions/workflows/ci.yml/badge.svg)](https://github.com/taurr/edtest/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE-MIT)
+[![License: Apache-2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE-APACHE)
+
 EDTest is a small set of Rust crates that make writing tests with [`rstest`](https://crates.io/crates/rstest) pleasant, with built‑in tracing via [`test-log`](https://crates.io/crates/test-log) and first‑class support for async tests on [`tokio`](https://crates.io/crates/tokio).
 
 Crates in this workspace:

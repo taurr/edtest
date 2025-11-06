@@ -5,8 +5,7 @@ fn add(a: u32, b: u32) -> u32 {
 
 #[cfg(test)]
 mod test {
-
-    use edtest::{fixture, serial, test};
+    use edtest::test;
     use tracing::*;
 
     #[test]
