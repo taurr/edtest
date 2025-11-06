@@ -72,14 +72,16 @@ jobs:
       - name: Wait for edtest_macros to appear on crates.io
         env:
           VERSION: ${{ steps.meta.outputs.version }}
+          UA: edtest-release-action (+https://github.com/taurr/edtest)
         run: |
           set -euo pipefail
-          for i in {1..30}; do
-            if curl -sSf "https://crates.io/api/v1/crates/edtest_macros/${VERSION}" >/dev/null; then
+          for i in {1..60}; do
+            CODE=$(curl -sS -H "User-Agent: ${UA}" -o /dev/null -w "%{http_code}" "https://crates.io/api/v1/crates/edtest_macros/${VERSION}")
+            if [ "$CODE" = "200" ]; then
               echo "edtest_macros ${VERSION} available on crates.io"
               exit 0
             fi
-            echo "Waiting for indexing... ($i)"
+            echo "Waiting for indexing... ($i) HTTP:$CODE"
             sleep 10
           done
           echo "::error::edtest_macros ${VERSION} not indexed in time" >&2
