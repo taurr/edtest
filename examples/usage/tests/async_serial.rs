@@ -1,8 +1,8 @@
-use edtest::test;
+use edtest::rstest;
 use std::time::Duration;
 
 /// Async test runs on the Tokio runtime and can be marked `serial` to avoid concurrency.
-#[test]
+#[rstest]
 #[edtest::serial]
 async fn async_value_test(#[values(0, 1)] a: u32, #[values(0, 1)] b: u32) {
     let sum = edtest_example_usage::add(a, b);

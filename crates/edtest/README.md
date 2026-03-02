@@ -20,19 +20,19 @@ serial_test = ...
 
 tests:
 ```rust,ignore
-use edtest::test;
+use edtest::rstest;
 use tracing::*;
 
 /// Normal synchronous test.
 /// Note that `cargo test` still tries to run these concurrently!
-#[test]
+#[rstest]
 fn sync_test() {
     info!("Tracing output is captured and part of the test output");
 }
 
 /// Async tests using `tokio` are fully supported - they can even
 /// be run using `serial` (non-concurrent)
-#[test]
+#[rstest]
 #[edtest::serial]
 async fn async_value_test(
     #[values(0, 1, 2, 3, 4, 5)] a: u32,
