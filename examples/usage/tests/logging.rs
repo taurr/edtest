@@ -1,9 +1,9 @@
-use edtest::test;
+use edtest::rstest;
 use tracing::{debug, error, info, span, warn, Level};
 
 /// Demonstrates capturing structured logs via `tracing`.
 /// The `test-log` integration from `edtest` ensures logs appear in test output.
-#[test]
+#[rstest]
 fn logs_are_captured() {
     let outer = span!(Level::INFO, "outer", version = %env!("CARGO_PKG_VERSION"));
     let _guard = outer.enter();

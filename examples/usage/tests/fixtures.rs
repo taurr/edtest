@@ -1,4 +1,4 @@
-use edtest::{fixture, test};
+use edtest::{fixture, rstest};
 
 #[fixture]
 fn base() -> u32 {
@@ -10,7 +10,7 @@ fn answer(base: u32) -> u32 {
     base + 2
 }
 
-#[test]
+#[rstest]
 fn uses_fixture(answer: u32) {
     assert_eq!(answer, 42);
 }

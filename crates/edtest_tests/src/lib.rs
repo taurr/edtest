@@ -5,15 +5,15 @@ fn add(a: u32, b: u32) -> u32 {
 
 #[cfg(test)]
 mod test {
-    use edtest::test;
+    use edtest::rstest;
     use tracing::*;
 
-    #[test]
+    #[rstest]
     fn sync_test() {
         info!("Tracing output is captured and part of the test output");
     }
 
-    #[test]
+    #[rstest]
     async fn async_value_test(
         #[values(0, 1, 2, 3, 4, 5)] a: u32,
         #[values(0, 1, 2, 3, 4, 5)] b: u32,

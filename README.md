@@ -8,7 +8,7 @@ EDTest is a small set of Rust crates that make writing tests with [`rstest`](htt
 
 Crates in this workspace:
 
-- `edtest` — the user-facing crate exposing the `#[test]` attribute macro, re‑exported `rstest` helpers, `serial_test::serial`, and `static_assertions`.
+- `edtest` — the user-facing crate exposing the `#[rstest]` attribute macro, re‑exported `rstest` helpers, `serial_test::serial`, and `static_assertions`.
 - `edtest_macros` — proc‑macro implementation for `edtest`.
 - `edtest_tests` — external tests/examples for the workspace.
 
@@ -25,18 +25,18 @@ test-log = { version = "0.2", features = ["trace"] }
 serial_test = "3"
 ```
 
-Write tests as usual, using `edtest::test` in place of `rstest::rstest` and `#[test]`:
+Write tests as usual, using `edtest::rstest` in place of `rstest::rstest` and `#[test]`:
 
 ```rust
-use edtest::test;
+use edtest::rstest;
 use tracing::*;
 
-#[test]
+#[rstest]
 fn sync_test() {
 	info!("tracing output is captured");
 }
 
-#[test]
+#[rstest]
 async fn async_value_test(
 	#[values(0, 1, 2)] a: u32,
 	#[values(0, 1, 2)] b: u32,
