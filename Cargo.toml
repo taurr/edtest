@@ -8,11 +8,11 @@ members = [
 ]
 
 [workspace.dependencies]
-proc-macro2 = "1.0.94"
-quote = "1.0.39"
-syn = "2.0.99"
+proc-macro2 = "1.0.106"
+quote = "1.0.44"
+syn = "2.0.117"
 
-proptest = "1.6.0"
+proptest = "1.10.0"
 tracing = "0.1.41"
 
 rstest = "0.26.1"

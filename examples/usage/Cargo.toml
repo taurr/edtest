@@ -7,13 +7,13 @@ publish = false
 [dev-dependencies]
 edtest = { path = "../../crates/edtest" }
 rstest = "0.26.1"
-test-log = { version = "0.2.18", features = ["trace"] }
-serial_test = "3.2.0"
-tokio = { version = "1.48.0", features = [
+test-log = { version = "0.2.19", features = ["trace"] }
+serial_test = "3.4.0"
+tokio = { version = "1.49.0", features = [
     "macros",
     "rt",
     "time",
     "rt-multi-thread",
     "test-util",
 ] }
-tracing = "0.1.41"
+tracing = "0.1.44"
