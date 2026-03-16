@@ -1,0 +1,6 @@
+---
+source: examples/usage/tests/insta_suffix.rs
+assertion_line: 11
+expression: output
+---
+hello world

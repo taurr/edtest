@@ -45,7 +45,11 @@ fn sync_test() {
 async fn async_value_test(#[case] a: u32, #[values(0, 1, 2)] b: u32) {
     use edtest::assert_cfg;
     assert_cfg!(test);
-
+	
+	// If using `insta`:
+    // set a snapshot suffix so the snapshot file name includes the input
+    // edtest::set_snapshot_suffix!("a{}_b{}", a, b);
+	
     debug!(event = "something_minor", code = 1001);
     tokio::time::sleep(std::time::Duration::from_millis(10)).await;
     let ab = a + b;

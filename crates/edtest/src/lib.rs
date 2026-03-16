@@ -13,6 +13,26 @@ pub use serial_test::serial;
 
 pub use static_assertions::*;
 
+/// Helper macro to set an `insta` snapshot suffix for the current scope.
+///
+/// Example:
+///
+/// set_snapshot_suffix!("{}", input);
+///
+/// Expands to code that clones the current `insta::Settings`, sets the
+/// snapshot suffix and binds the settings to the current scope so snapshots
+/// get the provided suffix for the duration of the scope.
+#[macro_export]
+macro_rules! set_snapshot_suffix {
+    ($($expr:expr),* $(,)?) => {
+        {
+            let mut settings = ::insta::Settings::clone_current();
+            settings.set_snapshot_suffix(format!($($expr),*));
+            let _guard = settings.bind_to_scope();
+        }
+    };
+}
+
 #[doc(hidden)]
 pub mod internal {
     use core::hint::black_box;
