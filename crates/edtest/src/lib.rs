@@ -24,12 +24,10 @@ pub use static_assertions::*;
 /// get the provided suffix for the duration of the scope.
 #[macro_export]
 macro_rules! set_snapshot_suffix {
-    ($fmt:expr $(, $args:expr)*) => {
-        {
-            let mut settings = insta::Settings::clone_current();
-            settings.set_snapshot_suffix(format!($fmt $(, $args)*));
-            let _guard = settings.bind_to_scope();
-        }
+    ($($expr:expr),*) => {
+        let mut settings = insta::Settings::clone_current();
+        settings.set_snapshot_suffix(format!($($expr,)*));
+        let _guard = settings.bind_to_scope();
     }
 }
 
