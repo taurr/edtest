@@ -4,7 +4,9 @@ All notable changes to this project will be documented in this file.
 
 ## Unreleased
 
-_(no changes)_
+- chore(ci): update GitHub Actions versions (checkout@v6, rust-cache, git-auto-commit@v7) (fea0f8b)
+- Add set_snapshot_suffix! macro and example test; closes #3 (1b64b0c)
+- Update tests and README for issue #4 (c6b510e)
 
 ## 0.7.0 - 2026-03-02
 
