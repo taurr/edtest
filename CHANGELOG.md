@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 ## Unreleased
 
+## 0.8.2 - 2026-03-16
+
+- fix: previous change to the `set_snapshot_suffix!` didn't go through!
+
 ## 0.8.1 - 2026-03-16
 
 - fix: require a format string and arguments for `set_snapshot_suffix!` and wrap expansion in a scope to avoid unexpected behaviour (fixes macro edge-case)

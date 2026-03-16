@@ -1,6 +1,6 @@
 [package]
 name = "edtest_macros"
-version = "0.8.1"
+version = "0.8.2"
 description = "Procedural macros for the `edtest` crate."
 readme = "README.md"
 edition = "2021"
