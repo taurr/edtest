@@ -29,6 +29,7 @@ Write tests as usual, using `edtest::rstest` in place of `rstest::rstest` and `#
 
 ```rust
 use edtest::rstest;
+#[allow(unused)]
 use tracing::*;
 
 #[rstest]
@@ -37,15 +38,19 @@ fn sync_test() {
 }
 
 #[rstest]
-async fn async_value_test(
-	#[values(0, 1, 2)] a: u32,
-	#[values(0, 1, 2)] b: u32,
-) {
-	use edtest::assert_cfg;
-	assert_cfg!(test);
-	trace!(a, b);
-	assert_eq!(a + b, b + a);
-	tokio::time::sleep(std::time::Duration::from_millis(10)).await;
+#[edtest::serial]
+#[case(0)]
+#[case(1)]
+#[case(2)]
+async fn async_value_test(#[case] a: u32, #[values(0, 1, 2)] b: u32) {
+    use edtest::assert_cfg;
+    assert_cfg!(test);
+
+    debug!(event = "something_minor", code = 1001);
+    tokio::time::sleep(std::time::Duration::from_millis(10)).await;
+    let ab = a + b;
+    let ba = b + a;
+    assert_eq!(ab, ba);
 }
 ```
 
