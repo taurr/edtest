@@ -17,3 +17,4 @@ tokio = { version = "1.49.0", features = [
     "test-util",
 ] }
 tracing = "0.1.44"
+insta = "1.31.0"

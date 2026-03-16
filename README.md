@@ -42,6 +42,10 @@ async fn async_value_test(
 	#[values(0, 1, 2)] b: u32,
 ) {
 	use edtest::assert_cfg;
+	// If using `insta`:
+    // set a snapshot suffix so the snapshot file name includes the input
+    // edtest::set_snapshot_suffix!("a{}_b{}", a, b);
+	
 	assert_cfg!(test);
 	trace!(a, b);
 	assert_eq!(a + b, b + a);
