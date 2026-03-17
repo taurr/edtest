@@ -4,9 +4,12 @@ All notable changes to this project will be documented in this file.
 
 ## Unreleased
 
+## 0.8.3 - 2026-03-17
+
 - fix(edtest): sanitize `insta` snapshot suffix across platforms (Windows/macOS/Linux) to avoid invalid filenames
 - test: add unit tests for suffix sanitizer and macro integration test using inline snapshots
 - chore: add `insta` as a dev-dependency in `edtest`
+- chore: bump crate versions to 0.8.3
 
 ## 0.8.2 - 2026-03-16
 
