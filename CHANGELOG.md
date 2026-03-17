@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 ## Unreleased
 
+## 0.8.4 - 2026-03-17
+
+- change(edtest): switch `clean_snapshot_suffix` to use a deterministic 64-bit hash (std DefaultHasher) and format as 16 lowercase hex; ensures filesystem-safe, stable suffixes across platforms
+- test: update tests to assert hashed suffix properties
+- chore: bump crate versions to 0.8.4
+
 ## 0.8.3 - 2026-03-17
 
 - fix(edtest): sanitize `insta` snapshot suffix across platforms (Windows/macOS/Linux) to avoid invalid filenames
