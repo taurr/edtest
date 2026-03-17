@@ -37,58 +37,23 @@ macro_rules! set_snapshot_suffix {
 pub mod internal {
     use core::hint::black_box;
     use core::sync::atomic::{AtomicUsize, Ordering};
+    use std::collections::hash_map::DefaultHasher;
+    use std::hash::{Hash, Hasher};
 
     static COUNTER: AtomicUsize = AtomicUsize::new(0);
 
-    /// Clean a snapshot suffix so it's safe to be used in file names across
-    /// Windows, macOS and Linux.
+    /// Convert any provided snapshot suffix into a short, filesystem-safe hash.
     ///
     /// Strategy:
-    /// - Keep ASCII letters and digits.
-    /// - Keep '-', '_', '.', '@', '+' as-is (commonly safe on all platforms).
-    /// - Convert whitespace and path separators ('/', '\\') to '-'.
-    /// - Replace all other characters with '_'.
-    /// - Trim trailing dots/spaces (problematic on Windows).
-    /// - Avoid reserved Windows device names by prefixing with '_'.
-    /// - If the result is empty, return "snapshot".
+    /// - Use the standard library's default hasher (currently SipHash-based) over the input bytes.
+    /// - Format the resulting u64 as 16 lowercase hex characters.
+    /// - Deterministic within a given Rust version/implementation; ASCII-only and cross-platform safe.
     #[doc(hidden)]
     pub fn clean_snapshot_suffix(input: &str) -> String {
-        let mut out = String::with_capacity(input.len());
-        for ch in input.chars() {
-            if ch.is_ascii_alphanumeric() || matches!(ch, '-' | '_' | '.' | '@' | '+') {
-                out.push(ch);
-            } else if ch.is_whitespace() || ch == '/' || ch == '\\' {
-                out.push('-');
-            } else {
-                out.push('_');
-            }
-        }
-
-        // Windows doesn't like trailing dots or spaces in file names
-        while out.ends_with(['.', ' ']) {
-            out.pop();
-        }
-
-        // Avoid reserved device names on Windows
-        // https://learn.microsoft.com/windows/win32/fileio/naming-a-file
-        fn is_windows_reserved(name: &str) -> bool {
-            const RESERVED: &[&str] = &[
-                "CON", "PRN", "AUX", "NUL", "COM1", "COM2", "COM3", "COM4", "COM5", "COM6", "COM7",
-                "COM8", "COM9", "LPT1", "LPT2", "LPT3", "LPT4", "LPT5", "LPT6", "LPT7", "LPT8",
-                "LPT9",
-            ];
-            RESERVED.iter().any(|&r| r.eq_ignore_ascii_case(name))
-        }
-
-        if out.is_empty() || !out.chars().any(|c| c.is_ascii_alphanumeric()) {
-            return "snapshot".to_string();
-        }
-
-        if is_windows_reserved(&out) {
-            return format!("_{}", out);
-        }
-
-        out
+        let mut hasher = DefaultHasher::new();
+        input.hash(&mut hasher);
+        let h: u64 = hasher.finish();
+        format!("{:016x}", h)
     }
 
     // Tiny side effects to ensure coverage sees executed regions and prevent full optimization.
@@ -131,18 +96,30 @@ mod tests {
     }
 
     #[test]
-    fn cleans_suffix_general() {
+    fn hashes_suffix_general() {
         use crate::internal::clean_snapshot_suffix as clean;
-        // Mix of problem characters including separators and invalid Windows chars
         let s = "a/b\\c:d*e?f|g<h>i\"j k.";
-        assert_eq!(clean(s), "a-b-c_d_e_f_g_h_i_j-k");
+        let h = clean(s);
+        assert_eq!(h.len(), 16);
+        assert!(h
+            .chars()
+            .all(|c| c.is_ascii_hexdigit() && (c.is_ascii_lowercase() || c.is_ascii_digit())));
+        // Deterministic for the same input
+        assert_eq!(h, clean(s));
+        // Likely different for a different input
+        assert_ne!(h, clean("different"));
     }
 
     #[test]
-    fn cleans_suffix_reserved_and_empty() {
+    fn hash_properties_reserved_and_empty() {
         use crate::internal::clean_snapshot_suffix as clean;
-        assert_eq!(clean("CON"), "_CON");
-        assert_eq!(clean("con"), "_con");
-        assert_eq!(clean("   \t\n"), "snapshot");
+        // Case sensitivity preserved via hashing
+        assert_ne!(clean("CON"), clean("con"));
+        // Empty still yields a deterministic hex string (for a given implementation)
+        let e = clean("");
+        assert_eq!(e.len(), 16);
+        assert!(e
+            .chars()
+            .all(|c| c.is_ascii_hexdigit() && (c.is_ascii_lowercase() || c.is_ascii_digit())));
     }
 }

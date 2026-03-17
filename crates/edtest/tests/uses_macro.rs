@@ -7,9 +7,9 @@ fn macro_smoke(#[values(1, 2)] x: u32) {
     assert!(x >= 1);
 }
 
-// Ensure the snapshot suffix is cleaned by the macro so paths are valid on all OSes.
+// Ensure the snapshot suffix is hashed by the macro so paths are valid on all OSes.
 #[test]
-fn macro_suffix_cleaned() {
+fn macro_suffix_hashed() {
     // Contains path separators, Windows-forbidden characters, quotes, and trailing dot/space
     let raw = "a/b\\c:d*e?f|g<h>i\"j k. ";
     let expected = edtest::internal::clean_snapshot_suffix(raw);
@@ -22,6 +22,12 @@ fn macro_suffix_cleaned() {
     let value = "ok";
     insta::assert_snapshot!(value, @"ok");
 
-    // Also assert the sanitizer behavior directly for determinism across platforms.
-    assert_eq!(expected, "a-b-c_d_e_f_g_h_i_j-k.-");
+    // Also assert the hashing behavior directly for determinism across platforms.
+    assert_eq!(expected.len(), 16);
+    assert!(expected
+        .chars()
+        .all(|c| c.is_ascii_hexdigit() && (c.is_ascii_lowercase() || c.is_ascii_digit())));
+    // Different input -> likely different hash (not guaranteed, but highly probable for 64-bit hash)
+    let different = edtest::internal::clean_snapshot_suffix("different input");
+    assert_ne!(expected, different);
 }
